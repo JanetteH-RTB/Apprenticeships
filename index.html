@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RTB Apprenticeship - Useful Information</title>
+<style>
+  :root{
+    --navy:#1b2a4a; --navy2:#25396b; --accent:#e8552d;
+    --ink:#1f2733; --muted:#63708a; --line:#e3e8f0; --bg:#f4f6fa; --card:#fff;
+    --pending:#c0392b; --pendbg:#fdecea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45;font-size:16px}
+  header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:22px 26px}
+  header h1{margin:0;font-size:23px}
+  header p{margin:6px 0 0;color:#c5d0e6;font-size:15px}
+  .wrap{max-width:1150px;margin:0 auto;padding:0 18px}
+  .toolbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 8px;border-bottom:1px solid var(--line)}
+  .search{width:100%;padding:12px 14px;font-size:16px;border:1px solid var(--line);border-radius:8px}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .tab{border:1px solid var(--line);background:var(--card);color:var(--navy);padding:8px 13px;border-radius:20px;font-size:15px;cursor:pointer;white-space:nowrap}
+  .tab .n{color:var(--muted);font-size:15px;margin-left:5px}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tab.active .n{color:#aebbd6}
+  .tab.audit{border-color:var(--accent);color:var(--accent)}
+  .tab.audit.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  main{padding:20px 0 60px}
+  .sheet-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0 14px}
+  .sheet-title{font-size:19px;margin:0;color:var(--navy)}
+  .folder-link{background:var(--accent);color:#fff;text-decoration:none;padding:7px 13px;border-radius:6px;font-size:15px;font-weight:bold}
+  .folder-link:hover{background:#cf4522}
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(20,30,60,.06)}
+  th{background:var(--navy);color:#fff;text-align:left;padding:12px 14px;font-size:15px;text-transform:uppercase;letter-spacing:.4px;font-weight:bold}
+  td{padding:12px 14px;border-top:1px solid var(--line);font-size:16px;vertical-align:top}
+  tr:hover td{background:#fafbfe}
+  td.linkcell a{color:#fff;background:var(--navy2);text-decoration:none;padding:6px 12px;border-radius:6px;font-size:15px;font-weight:bold;display:inline-block}
+  td.linkcell a:hover{background:var(--navy)}
+  .note{color:var(--muted);font-size:14px;margin-left:8px}
+  .pill{display:inline-block;padding:4px 10px;border-radius:20px;font-size:14px;font-weight:bold;white-space:nowrap}
+  .pill.pending{background:var(--pendbg);color:var(--pending)}
+  .empty{padding:26px;text-align:center;color:var(--muted);background:var(--card);border-radius:10px;font-size:16px}
+  .count{color:var(--muted);font-size:15px;margin-bottom:10px}
+  footer{color:var(--muted);font-size:14px;text-align:center;padding:22px}
+  @media(max-width:640px){th,td{padding:9px;font-size:15px}header h1{font-size:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Apprenticeship &mdash; Useful Information</h1>
+    <p>Central directory of resource folders and links for the apprenticeship team.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <input class="search" id="search" type="text" placeholder="Search across all tabs...">
+    <div class="tabs" id="tabs"></div>
+  </div>
+  <main id="main"></main>
+</div>
+
+<footer id="footer"></footer>
+
+<script>
+const DATA = {"sheets": [{"name": "Archived", "folder": "", "rows": [{"name": "(To be updated)", "note": "", "link": ""}]}, {"name": "Coach Induction", "folder": "", "rows": [{"name": "Coach Handbooks", "note": "", "link": ""}, {"name": "CPD Log for Self", "note": "", "link": ""}]}, {"name": "Curriculum", "folder": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAgpyo7GvmmSKpEIyCf0RKnAXmjDtnXWGJCpDEzDwlwiqs?e=iaAUnz", "rows": [{"name": "Level 3 Business Administrator", "note": "Business Admin Curriculum", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgC6vWMDSvwsR7j_kBVL8V7XAZXN0CTWeR3U-pRGMh7QXIc?e=SUOrUq"}, {"name": "Level 3 Improvement Technician", "note": "Improvement Technician Curriculum", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBx-u5FVKJdSZ5xd1gqgZpcAWzA3h3cYOhVB4CUFmHcOj0?e=RwQCKM"}, {"name": "Level 4 AI & Automation", "note": "AI & Automation", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDB7Wak6SmtTqjP9rrn3OYZAbOKD2w8kV8GIwF5mwEX0YY?e=cxTAsg"}, {"name": "Level 4 Associate Project Manager", "note": "Project Manager", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgCfJW6Y8KSlR4yTQyJCFeO5AUfdIoL5tI_bbc7y2yUlHMI?e=5AMvqv"}, {"name": "Level 5 Improvement Specialist", "note": "Improvement Specialist", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBj3-mOQpXDRrsddy6-8VK1ATYoYZ6J9tvhHhoriKFTPig?e=eWjL7R"}]}, {"name": "Enrollment & Onboarding Learner", "folder": "", "rows": [{"name": "Client Information When Onboarding", "note": "", "link": ""}, {"name": "Email Template for Inviting to Skills Scan", "note": "", "link": ""}, {"name": "Presentations for Skills Scan", "note": "", "link": ""}, {"name": "Skills Scans", "note": "", "link": ""}]}, {"name": "EPA & Apprenticeship Assessment", "folder": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBSwyQOc6mDRrfbgvHZuU7jAXYzwPXH6rLGFiFjW-8wo5g?e=BXkK7c", "rows": [{"name": "Documents from Coach to Enter Gateway inc Handover", "note": "Documents from Coach to enter Gateway inc handover", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBSwyQOc6mDRrfbgvHZuU7jAXYzwPXH6rLGFiFjW-8wo5g?e=Mr7wyg"}, {"name": "DSW Documents & Information", "note": "DSW documents & Information", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgD77hFdLdF4S6KLQBjYmr1dAbcasBbaT0Td_HxIYq3HUQ0?e=JNZUUV"}, {"name": "EPA Handbook (Coach Resource)", "note": "EPA Handbook ( Coach Resource)", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAU-7qsQnYTTaLo47q_CBipAWFgc1UcyixpGYSUy0zIpE4?e=SX6a0b"}, {"name": "L3 Business Administrator Information inc Toolkit", "note": "L3 Business Administrator information inc Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgCO5u6aXnM0Ro_gxt8UF_3sAYI_KVorW5xja4EoZCVFssQ?e=IRdmOc"}, {"name": "L3 Improvement Technician Information & Toolkit", "note": "L3 Improvement Technician information & Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAeBnYbFh34SpXT2uZxGrdJAT3gedJh9OV9Er8VW9BixD8?e=RQQ6hS"}, {"name": "L3 Team Leader Information inc Toolkit", "note": "L3 Team Leader information inc Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgCXaVg_5gfwRK6nFKsicxeZAYCct6bGao4q3Z-KRLMviMk?e=kRD69G"}, {"name": "L4 AI & Automation Information & Toolkit", "note": "L4 Ai & Automation information & Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBqdwKUqcvXQ6Iydxw5MouHAeFVPmrvOXLzZSwrJ1ulghY?e=P9Qg8x"}, {"name": "L4 Associate Project Manager inc Toolkit", "note": "L4 Associate Project Manager inc Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBAIielOdXYTb1ttMZx18lrAfHnBj9TGxoFnkgkIwuT0mk?e=imaJI9"}, {"name": "L5 Coaching Information inc Toolkit", "note": "L5 Coaching information inc Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDXbq0O-lswRpVGqtz14WQMASno916-44ZwJpSwmUcHisk?e=rVeYtd"}, {"name": "L5 Improvement Technician Information & Toolkit", "note": "L5 Improvement Technician information &Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgCdMNAv3B1oR4y50tOhzx2NAVjOBFoj2SP5iZ2jdH_iQuI?e=Ntwj37"}, {"name": "L5 Operations Manager Information inc Toolkit", "note": "L5 Operations Manager information inc Toolkit", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDRrYbuSKmcRKB0kLe-Hhb0AbEWBJmLAJ9sAtX_yp_LDhs?e=XwtaRX"}]}, {"name": "Functional Skills", "folder": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgASABH9Rx0zSKM7JWFkjAEuAeduW9zNeWxSKQsRTc0g3qc?e=STmIyR", "rows": [{"name": "Coach Handbook for Functional Skills", "note": "Coach Handbook for Functional Skills", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgASABH9Rx0zSKM7JWFkjAEuAeduW9zNeWxSKQsRTc0g3qc?e=Wn9usE"}, {"name": "English Session Plans and Workshops", "note": "English Session plans and Workshops", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDJeUErctRuSoXJ0yJCXK2MAWef2qvfWSwrMuMfrauG0yk?e=muePqY"}, {"name": "Functional Skills Exam Guidance", "note": "Functional Skills Exam Guidance", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgB82zYka2l-SYMkz7MzRkOPAauDMI-m60OELHZ7uyqgzCo?e=ok78QI"}, {"name": "Functional Skills Learning Collective", "note": "Functional Skills Learning Collective", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAQoiwZa3qFS6i2aIlc7UVIAcMpa73M5PEgf83CW1gzpgc?e=ECWooE"}, {"name": "Functional Skills Log", "note": "Functional Skills Log", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBz8n2lo9L0QKC7gXF9FjGPAVHfUbRuEw7dpfil0po2Yms?e=OsMIXY"}, {"name": "Maths Session Plans and Workshops", "note": "Maths Session plans and Workshops", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDaDaR3CH2ISJ3yFB7tNkJjAQPuSS6bKYblFtBv6cTypyw?e=c7cQm7"}]}, {"name": "Inclusion", "folder": "", "rows": [{"name": "Guides and Launch Documents", "note": "", "link": ""}, {"name": "Learning Collective and Learner Tools", "note": "", "link": ""}, {"name": "Training Presentations & Resources", "note": "", "link": ""}]}, {"name": "On Programme - Coaches", "folder": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAYshKJdeVkQKo7dY5f84WoASjdZ2BeoLIheZ-Ryx8pE78?e=f1U5Fx", "rows": [{"name": "Action Planning", "note": "Action Planning", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDGr8uMFh-WRYMPJqE27TJ9AT8d1Ew73XekwFU5hf2P3T0?e=fvh5ci"}, {"name": "Assessment Verbs & Feedback Template", "note": "Assessment Verbs & Feedback Template", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBbZscbhN7wR7TNf9Fo7cDZATmTCIr75fIQJxj7Xt_Zd_Q?e=1988rS"}, {"name": "Email Templates for Sessions & Deadlines", "note": "Email templates for sessions & deadlines", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAPqzI7BLXcTJWVBVFrhMtQASFqjjAZ_dG5kzT9d-24UTQ?e=sGgp5o"}, {"name": "Functional Skills Logs", "note": "Functional Skills Logs", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAauN5CvtXDRqT2bCtN6mmuAcCrobBeK05luHDrS_-JFNE?e=yZaJVL"}, {"name": "PDP & CPD Logs", "note": "PDP & CPD Logs", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAD2Pr-51U8RYaMm0O2nXahAcjBbOQ0Gcc-WO01Pmpj6Tg?e=gZrEbI"}, {"name": "Personal, Professional & Educational Support", "note": "Personal, Professional & Educational support", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDWyU2ONgOcTJCH4X54zCQvAUs-aPW9_-cv4-ozTITg7hA?e=jlKXK0"}, {"name": "Pre-loved Coach Handover", "note": "Pre loved Coach handover", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDxJXhtH_RFSYOstlXZdhlvAe_v-rXSfZGYA6rGwixk1hc?e=0adJcZ"}, {"name": "Progress Review & TLA Questions inc Safeguarding", "note": "Progress Review & TLA Questions inc Safeguarding", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgCt038vgOD0R7aaxXbOAPhJAThpFIdOsAA3MhtT91Xf6cE?e=afH8mY"}, {"name": "Shadowing & Mentoring Logs", "note": "Shadowing & Mentoring Logs", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDaqzXZ_ZJnTrnHhKWIVpakAeGE4b9eY0XS-sG54GRTDbo?e=JCfLtN"}, {"name": "Ai Tips & Tricks", "note": "Ai Tips & Tricks", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgAku8nbCSyfS6Ln_gvcposBAUgs2yHG4Kr7Xbeen6ncunQ?e=JUGhgd"}]}, {"name": "Quality", "folder": "", "rows": [{"name": "Functional Skills Support", "note": "", "link": ""}, {"name": "Good Practice", "note": "", "link": ""}, {"name": "Quality Practice", "note": "", "link": ""}, {"name": "Quality Strategy & Process Overviews", "note": "", "link": ""}]}, {"name": "Safeguarding", "folder": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBNfrbgvv8dRo_8CXOHsOt5AXT7CNqkGi_GBSjwePNqmLc?e=hDJ1uc", "rows": [{"name": "Safeguarding Induction for New Coaches", "note": "Safeguarding Induction for new Coaches", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgCPF5WaEqF_R5Dn-qBmdEGiAdXJl8yBgNRABmvYa267WBg?e=ciRGxI"}, {"name": "Safeguarding Newsletters", "note": "Safeguarding Newsletters", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgDDfIRFciP4Tq6tu9OWeGmQAe86mnT6p__yoXFEclkhHV8?e=4g3foD"}, {"name": "Safeguarding Process & Forms", "note": "Safeguarding Process & Forms", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgB3-u6leOx4SK9OmmQUgPuxAbmdR4FtOuWG1cj1wHSGt8s?e=FIv2iF"}, {"name": "Safeguarding Support for Learners", "note": "Safeguarding support for learners", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgBmjd5ASzHXRqcUMPpu96HAAXSrx6ljM47d2r5t8FMkl_A?e=l81ZUQ"}, {"name": "Safeguarding Team", "note": "Safeguarding Team", "link": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgCzjaxe78fHTKnvOq-nRSJIAaQpTp012Y_ORh_extOlUTM?e=gmdTRK"}]}, {"name": "Sales", "folder": "", "rows": [{"name": "Client Handbook in Contract Onboarding", "note": "", "link": ""}, {"name": "Overview Packs for Employers", "note": "", "link": ""}, {"name": "Overview Packs for Learners", "note": "", "link": ""}, {"name": "Pitch Pack", "note": "", "link": ""}]}, {"name": "Useful Links & Info", "folder": "", "rows": [{"name": "Apprentice of the Month", "note": "", "link": ""}, {"name": "Learner Portal (De-funded Standards)", "note": "", "link": ""}, {"name": "Out of Office Messages for All Learner Facing", "note": "", "link": ""}]}, {"name": "WOW & 1st and Last DC Visit", "folder": "https://raisethebarltd.sharepoint.com/:f:/s/UsefulinformationinApprenticeships/IgABCZboBEw2T5bnTLmjlPb5AYTrjqKFnQO570YOajKeyEU?e=9iCrno", "rows": [{"name": "Level 3 Business Administrator", "note": "", "link": ""}, {"name": "Level 3 Improvement Technician", "note": "", "link": ""}, {"name": "Level 4 AI & Automation", "note": "", "link": ""}, {"name": "Level 4 Associate Project Manager", "note": "", "link": ""}, {"name": "Level 5 Improvement Specialist", "note": "", "link": ""}, {"name": "Withdrawn Apprenticeships", "note": "", "link": ""}]}, {"name": "Workshop Information", "folder": "", "rows": [{"name": "(To be updated)", "note": "", "link": ""}]}], "built": "22 July 2026, 13:29"};
+function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+let activeTab = 0;
+let query = '';
+
+function rowMatches(r){
+  if(!query) return true;
+  return (r.name+' '+r.note).toLowerCase().includes(query);
+}
+
+function linkCell(r){
+  if(r.link){
+    return '<a href="'+esc(r.link)+'" target="_blank" rel="noopener">Open folder &#8599;</a>'
+      + (r.note && r.note.toLowerCase()!==r.name.toLowerCase() ? '<span class="note">'+esc(r.note)+'</span>' : '');
+  }
+  return '<span class="pill pending">Pending link</span>'
+    + (r.note ? '<span class="note">'+esc(r.note)+'</span>' : '');
+}
+
+function renderSheet(s){
+  const rows = s.rows.filter(rowMatches);
+  let h = '<div class="sheet-head"><h2 class="sheet-title">'+esc(s.name)+'</h2>';
+  if(s.folder) h += '<a class="folder-link" href="'+esc(s.folder)+'" target="_blank" rel="noopener">Open whole folder &#8599;</a>';
+  h += '</div>';
+  h += '<div class="count">'+rows.length+' of '+s.rows.length+' item'+(s.rows.length===1?'':'s')+'</div>';
+  if(rows.length===0) return h+'<div class="empty">No matching items on this tab.</div>';
+  h += '<table><thead><tr><th style="width:56px">#</th><th>Subfolder</th><th style="width:38%">Link</th></tr></thead><tbody>';
+  rows.forEach((r,i)=>{ h += '<tr><td>'+(i+1)+'</td><td>'+esc(r.name)+'</td><td class="linkcell">'+linkCell(r)+'</td></tr>'; });
+  h += '</tbody></table>';
+  return h;
+}
+
+function renderAudit(){
+  const items = [];
+  DATA.sheets.forEach(s=>s.rows.forEach(r=>{ if(!r.link) items.push({tab:s.name, name:r.name||'(unnamed)'}); }));
+  const shown = items.filter(it=>!query || it.tab.toLowerCase().includes(query) || it.name.toLowerCase().includes(query));
+  let live=0; DATA.sheets.forEach(s=>s.rows.forEach(r=>{ if(r.link) live++; }));
+  let h = '<h2 class="sheet-title">Link audit</h2>';
+  h += '<div class="count">'+live+' live link'+(live===1?'':'s')+' &middot; '+items.length+' still pending a URL</div>';
+  if(shown.length===0) return h+'<div class="empty">Nothing pending &mdash; every subfolder has a live link. &#127881;</div>';
+  h += '<table><thead><tr><th>Tab</th><th>Subfolder</th><th style="width:160px">Status</th></tr></thead><tbody>';
+  shown.forEach(it=>{ h += '<tr><td>'+esc(it.tab)+'</td><td>'+esc(it.name)+'</td><td><span class="pill pending">Pending link</span></td></tr>'; });
+  h += '</tbody></table>';
+  return h;
+}
+
+function render(){
+  document.getElementById('main').innerHTML = (activeTab===-1) ? renderAudit() : renderSheet(DATA.sheets[activeTab]);
+}
+
+function buildTabs(){
+  const c = document.getElementById('tabs');
+  let h = '';
+  DATA.sheets.forEach((s,i)=>{ h += '<button class="tab'+(i===activeTab?' active':'')+'" data-i="'+i+'">'+esc(s.name)+'<span class="n">'+s.rows.length+'</span></button>'; });
+  h += '<button class="tab audit'+(activeTab===-1?' active':'')+'" data-i="-1">Link audit</button>';
+  c.innerHTML = h;
+  c.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{ activeTab=parseInt(b.dataset.i,10); buildTabs(); render(); }));
+}
+
+document.getElementById('search').addEventListener('input', e=>{ query=e.target.value.trim().toLowerCase(); render(); });
+document.getElementById('footer').textContent = 'Raise the Bar Ltd \u00b7 Built from Useful_Information_for_Apprenticeships.xlsx on ' + DATA.built;
+
+buildTabs();
+render();
+</script>
+</body>
+</html>
