@@ -127,7 +127,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 
 <div class="wrap">
   <div class="toolbar">
-    <input class="search" id="search" type="text" placeholder="Search across all tabs...">
+    <input class="search" id="search" type="text" placeholder="Search every tab at once (folder or subfolder name)...">
     <div class="tabs" id="tabs"></div>
   </div>
   <main id="main"></main>
@@ -183,20 +183,49 @@ function renderAudit(){
   return h;
 }
 
+function renderSearch(){
+  // Global search across every tab. Groups matching rows under their tab name.
+  let total = 0;
+  let blocks = '';
+  DATA.sheets.forEach(s=>{
+    const rows = s.rows.filter(rowMatches);
+    if(rows.length===0) return;
+    total += rows.length;
+    let b = '<div class="sheet-head"><h2 class="sheet-title">'+esc(s.name)+'</h2>';
+    if(s.folder) b += '<a class="folder-link" href="'+esc(s.folder)+'" target="_blank" rel="noopener">Open whole folder &#8599;</a>';
+    b += '</div>';
+    b += '<table><thead><tr><th style="width:56px">#</th><th>Subfolder</th><th style="width:38%">Link</th></tr></thead><tbody>';
+    rows.forEach((r,i)=>{ b += '<tr><td>'+(i+1)+'</td><td>'+esc(r.name)+'</td><td class="linkcell">'+linkCell(r)+'</td></tr>'; });
+    b += '</tbody></table>';
+    blocks += '<div style="margin-bottom:26px">'+b+'</div>';
+  });
+  let h = '<div class="count">'+total+' result'+(total===1?'':'s')+' across all tabs for &ldquo;'+esc(query)+'&rdquo;</div>';
+  if(total===0) return h+'<div class="empty">No matches anywhere. Try a shorter or different word.</div>';
+  return h+blocks;
+}
+
 function render(){
-  document.getElementById('main').innerHTML = (activeTab===-1) ? renderAudit() : renderSheet(DATA.sheets[activeTab]);
+  const main = document.getElementById('main');
+  if(query){ main.innerHTML = renderSearch(); return; }
+  main.innerHTML = (activeTab===-1) ? renderAudit() : renderSheet(DATA.sheets[activeTab]);
 }
 
 function buildTabs(){
   const c = document.getElementById('tabs');
+  const searching = !!query;  // while searching, no tab is "active"
   let h = '';
-  DATA.sheets.forEach((s,i)=>{ h += '<button class="tab'+(i===activeTab?' active':'')+'" data-i="'+i+'">'+esc(s.name)+'<span class="n">'+s.rows.length+'</span></button>'; });
-  h += '<button class="tab audit'+(activeTab===-1?' active':'')+'" data-i="-1">Link audit</button>';
+  DATA.sheets.forEach((s,i)=>{ h += '<button class="tab'+(!searching && i===activeTab?' active':'')+'" data-i="'+i+'">'+esc(s.name)+'<span class="n">'+s.rows.length+'</span></button>'; });
+  h += '<button class="tab audit'+(!searching && activeTab===-1?' active':'')+'" data-i="-1">Link audit</button>';
   c.innerHTML = h;
-  c.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{ activeTab=parseInt(b.dataset.i,10); buildTabs(); render(); }));
+  c.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+    // Clicking a tab clears any active search and jumps to that tab
+    activeTab=parseInt(b.dataset.i,10);
+    query=''; document.getElementById('search').value='';
+    buildTabs(); render();
+  }));
 }
 
-document.getElementById('search').addEventListener('input', e=>{ query=e.target.value.trim().toLowerCase(); render(); });
+document.getElementById('search').addEventListener('input', e=>{ query=e.target.value.trim().toLowerCase(); buildTabs(); render(); });
 document.getElementById('footer').textContent = 'Raise the Bar Ltd \u00b7 Built from Useful_Information_for_Apprenticeships.xlsx on ' + DATA.built;
 
 buildTabs();
